@@ -1,0 +1,274 @@
+---
+title: 'MA717: Applied Regression and Experimental Data Analysis'
+author: 'Assignment template '
+date: "04-12-2023 "
+output: pdf_document
+---
+
+\textbf{Task 1: Data reading and simple exploration (25$\%$)}
+
+### 1.1. Read "College.csv" file into R with following command and use dim() and head() to check if you read the data correct. You should report the number of observations and the number of variables. **(5 $\%$)**
+
+```{r, eval=TRUE}
+# To read 'College.csv'
+mydata<-read.csv("College.csv", header=T, stringsAsFactors=TRUE)
+# use dim()
+dim(mydata)
+# use head()
+head(mydata)
+
+
+```
+
+
+
+### 1.2. Use your registration number as random seed, generate a random subset of College data with sample size 700, name this new data as mynewdata. Use summary() to output the summarized information about mynewdata. Please report the number of private and public university and the number of Elite university and non-Elite university in this new data. **(12 $\%$)** 
+
+```{r, eval=TRUE}
+# To set random seed
+set.seed(2310158)
+# To generate random subset of college data size 700
+index<-sample(700)
+mynewdata<-mydata[index, ]
+# below code shows the summary of mynewdata
+summary(mynewdata)
+```
+The above summary of my new data depicts the count of public, private, Elite and non-elite universities from the provided random data set sample size of 700.
+Therefore the inferences are as follows:
+No.of Private universities:507
+No.of Public universities:193
+No.of Elite universities:67
+No.of non-elite universities:633
+
+### 1.3. Use mynewdata, plot histogram plots of four variables "Outstate", "Room.Board", "Books" and "Personal". Give each plot a suitable title and label for x axis and y axis. **(8$\%$)**
+
+```{r, eval=TRUE}
+# Histogram plots for Outstate category
+hist(mynewdata$Outstate,xlab='Fee Amount',ylab='No.of students enrolled',
+     main='Graph on Outstate category from mynewdata')
+# Histogram plots for Room.Board category
+hist(mynewdata$Room.Board,xlab='Fees',ylab='No.of students enrolled',
+     main='Graph on fees for Room.Board from mynewdata')
+# Histogram plots for fee category
+hist(mynewdata$Books,xlab='Fees',ylab='No.of students enrolled',
+     main='Graph on fee for Books from mynewdata')
+# Histogram plots for Personal category
+hist(mynewdata$Personal,xlab='Personal Cost',ylab='No.of students enrolled',
+     main='Graph on Personal expense from mynewdata')
+```
+
+
+\textbf{Task 2: Linear regression (45$\%$)}
+
+### 2.1. Use mynewdata, do a linear regression fitting when outcome is "Grad.Rate" and predictors are "Private" and "Elite". Show the R output and report what you have learned from this output (you need to discuss significance, adjusted R-squared and p-value of F-statistics). **(6$\%$)**. 
+
+```{r, eval=TRUE}
+#To set liner model regression with dataset mynewdata with predictors Private and Elite
+mynewdata.regression<-lm(Grad.Rate~Private+Elite,data=mynewdata)
+# To summarise the linear regression model.
+summary(mynewdata.regression)
+
+
+```
+The above linear regression depicts the significance level of the Graduation rate concerning private and public universities.
+The coefficient shows that the intercept value is 55.006 estimating the Grad. rate with corresponds to Private and Elite universities. The coefficient of Private universities is 11.486 which is an increase with Grad. Rate compared to Non-Private universities. The coefficient of Elite Universities is 18.140 which is an increase with Grad. Rate compared to non-private universities.
+
+The t-value estimates the standard deviation between estimate and zero. The high value of 49.510 describes the coefficients are highly statistically significant.
+
+Pr(<|t|) determines the p-value for the t-test showing the coefficient significance level.
+The three coefficients (Grad. Rate, Private, Elite) showcase a high significance level as p-values are equal to zero which satisfies the null hypothesis. The *** symbol denotes the high level of significance with the predictors Private and Elite.
+
+The residual standard deviation is 15.32 with a degree of freedom 697(700-3) representing the deviation amount of Grad. Rate with the predictors Private and Elite.
+
+The Multi R-Squared 0.199 illustrates that 19.9 percent of the variance in response variable Grad. Rate with the predictor variables Private and Elite.
+
+The adjusted R-square controls the predictor of the model to avoid overfitting which adjusts to 0.1967. There is not much difference between the Multi R squared and Adjust R-Square value which clearly shows that the model is not overfitting.
+
+The F Statistics indicates 86.57 which helps to check the significance of the model. The p-value is zero which is much less than 86.57 which shows a high level of significance.
+
+This infers that the variance of Grad. Rate depends on Private and Elite universities.
+
+### 2.2 Use the linear regression fitting result in 2.1, calculate the confidence intervals for the coefficients. Also give the prediction interval of "Grad.Rate" for a new data with Private="Yes" and Elite="No". **(4$\%$)**
+
+```{r, eval=TRUE}
+# calculating the confidence interval for the coefficient for lm mynewdata.regression
+confint(mynewdata.regression)
+
+# To give the prediction interval of Grad.rate with new data(Private=Yes and Elite=No)
+#Creating a new data point
+new_datapoint <- data.frame(Private = rep("Yes", nrow(mynewdata)), 
+                            Elite = rep("No", nrow(mynewdata)))
+
+# Predicting Grad.Rate with new data point with prediction interval
+Expected_prediction <- predict(mynewdata.regression, newdata = new_datapoint,
+                               interval = "prediction")
+print(Expected_prediction)
+#Note Output has printed the maximum lines,omitted 367 rows 
+#" [ reached getOption("max.print") -- omitted 367 rows ]"
+```
+
+2.3 Use mynewdata, do a multiple linear regression fitting when outcome is "Grad.Rate", all other variables as predictors. Show the R output and report what you have learned from this output (you need to discuss significance, adjusted R-squared and p-value of F-statistics). Is linear regression model in 2.3 better than linear regression in 2.1? Use ANOVA to justify your conclusion. **(14\%)** 
+
+```{r, eval=TRUE}
+#Calculating the multiple linear regression with Grad.Rate as response variable and all 
+#other variables as predictors.
+multi_all<-lm(Grad.Rate~.,data= mynewdata)
+# To summarise the multiple regression model.
+summary(multi_all)
+```
+The output of the above multiple linear regression model has 16 predictor variables to predict Grad. Rate. The metrics of this model are as below:
+
+Residuals(the difference between observed and predicted values)are -48.961 and 53.298.
+The intercept 33.9175 shows the actual value when the remaining predictors are zero. The Predictor PrivateYes tend to increase Grad. Rate approximately 2.9587 times, however not statistically significant. ELiteYes tend to increase Grad. Rate approximately 3.6754 with a 10 percent significance level. The remaining predictors almost fall near zero range to impact the Grad. Rate, however variables such as Apps, Accept, P.Undergrad, Outstate, Room.Board, PhD, perc. alumni, Expend shows a statistically significant level.
+
+The predictors Enroll, F.Undergrad, Books, Personal, Terminal, S.F.Ratio, and EliteYes do not appear to have statistically significant effects on 'Grad. Rate' as their p-values (p > 0.05).
+
+The R-squared value is 0.4586 which shows a 45.86 percentage of variance in Grad. Rate concerning predictors in this model and adjusted R-Square value is 0.4459 which is a slightly lower difference than R-squared value indicating limiting the model complexity.
+
+The F-Statistics test values 36.16 and p-value < 2.2e-16 which are less than the F-Statistic values show that the model is statistically significant.
+
+This concludes that this model has a 45.86 percent variance in Grad. Rate with that of all predictors included. Some predictors show no significant relationship with Grad. Rate, while some predictors show a higher significant association with Grad. Rate. This model helps to have better refinement of highly significant predictors to improve the accuracy of better fit.
+
+```{r, eval=TRUE}
+# Using ANOVA to compare the linear regression model to Multiple regression model
+anova(mynewdata.regression,multi_all)
+
+
+```
+The above ANOVA table helps us to predict the better model for this analaysis.Model 1 analyse the response variable Grad.Rate with two predictors Private and Elite. where as Model 2 analyse the response variable with Grad.Rate with all predictors in the data set.
+
+The Residual Degree of Freedom for model1 is 697 and model 2 is 683.The Residual Sum of Squares for model 1(163673) is higher than model 2(110622).Model 2  has sum of squares is 53051 which indicates the variability with multiple predictors when compared to model 1.
+
+The F-Satistics is 23.396 shows significant improvement in fit of model 2 when compared to model 1. The p-value is very low which shows statistically high significant for model 2 when compared to model 1.
+
+To conclude , this ANOVA table shows Model 2, with all predictors shows significantly better than model 1(where Private and Elite are the predictors). The lower RSS value of model 2 with more number of predictors shows that predictors contribute significantly on variation in the Grad. Rate. Hence, the model 2 provides a better fit than model 1.
+
+### 2.4. Use the diagnostic plots to look at the fitting of multiple linear regression in 2.3. Please comment what you have seen from those plots. **(7\%)** 
+
+```{r, eval=TRUE}
+# To plot the fitting of multiple regression model
+plot(multi_all)
+```
+The above four graph plots are explained below:
+
+1. Residuals Vs Fitted: The plots are scattered randomly around zero points. Also, the red line is almost near the zero point dotted lines which depicts that Grad. Rate is dependent on all other predictors.
+
+2. Q-Q Residuals: This Quantile-Quantile point helps to check the normality of predictors. The points almost fall on the diagonal line, however towards the end, there is a slight variation which shows that variables are not fit on this model. By removing these the multiple regression fitting can be improved.
+
+3. Scale-Location Plot: The plots are randomly scattered near the red line area. Some plots are scattered far away from the red line which represents that there are few unequal variables in residuals.
+
+4. Residuals vs Leverage: This graph clearly shows the high influencing predictors among all other predictors concerning the leverage of Grad.Rate.There are a few plots that are scattered far away in the graph which clearly shows that some variables have low variance. The high value of residual and leverage will clearly show their influence on this multiple regression model.
+
+
+By conclusion from the above graph, the different plots clearly show us the highly influential variables, and assumptions on the regression model and determine the reliability of the model.
+
+
+
+
+
+### 2.5. Use mynewdata, do a variable selection to choose the best model. You should use plots to justify how do you choose your best model. Use the selected predictors of your best model with outcome "Grad.Rate", do a linear regression fitting and plot the diagnostic plots for this fitting. You can use either exhaustive, or forward, or backward selection method. **(14\%)**
+
+```{r, eval=TRUE}
+# Using the library leaps
+library(leaps)
+# Set the regression subset to conduct exhaustive search through maximum 16 predictors 
+#to Graduation rates(Grad.Rate)
+data_regsubset <- regsubsets(Grad.Rate~., data=mynewdata, nvmax=16)
+# To summarise the regsubset under the label data_regsubset_sum
+data_regsubset_sum <- summary(data_regsubset)
+# To set the function for 2X2 plotting grid
+par(mfrow=c(2,2))
+#To set plotting to visualize the different relationship between the variable aiming to 
+#find a good fit model.
+plot(data_regsubset_sum$rss, xlab="Variable number", ylab="RSS", type="l")
+
+plot(data_regsubset_sum$adjr2, xlab="Variable number", ylab="Adjust R-squared", type="l")
+
+plot(data_regsubset_sum$cp, xlab="Variable number", ylab="Cp", type="l")
+
+plot(data_regsubset_sum$bic, xlab="Variable number", ylab="BIC", type="l")
+# To find the highest Adjusted R-Squared
+which.max(data_regsubset_sum$adjr2)
+# To find the lowest cp(Mallow's Cp)
+which.min(data_regsubset_sum$cp)
+# To find the lowest bic(Bayesian Information Criterion)
+which.min(data_regsubset_sum$bic)
+# To select the coefficient based on the specific criterion 
+coef(data_regsubset, 7)
+# To set a fit of linear model with 7 predictors
+lm_select_model = lm(Grad.Rate~Apps+P.Undergrad+Outstate+Room.Board+PhD+perc.alumni+Expend,
+                     data = mynewdata)
+# To summarise the lm_select_model
+summary(lm_select_model)
+#To generate the diagnostic plots for the lm_select_model
+plot(lm_select_model)
+```
+The exhaustive method of variable selection has been used here to check the different combinations of predictors to a maximum variables of 16. The regsubsets function helps to consider all possible combinations and evaluate each combination separately.
+
+The best model based on different criteria is explained with a maximum value of sum$adjr2 and a minimum value of cp and bic.
+
+The RSS graph plot shows that the number of variables is proportional to the residual sum of squares. The adjusted R-squared value shows the variance proportion between dependent and independent variables. As the no. of variables increases the adjusted R-Square value increases. The Cp graph indicates model fitness and helps to improve further fitness of the model. The BIC graph helps to avoid the overfit range in this model. The minimum value of BIC and Cp and the maximum value of adjusted R-square and RSS show the model fitting.
+
+This model includes 7 predictors. The intercept value has been reduced to 28.74 when compared to the multiple regression model intercept of 33.91
+
+Apps, Outstate, Room. Board, PhD, perc. alumni have positive effects on the graduation rate has a positive impact on Grad. Rate
+
+P. Undergrad, Expend has negative effects on the graduation rate has a negative impact on Grad. Rate. All predictors except Room.Board, PhD, and Expend exhibit statistical significance at various levels (indicated by p-values).
+
+Concerning model performance, the minimum and maximum residuals are -47.259 and 56.258, and the residual standard error is 12.82
+
+Multiple R-squared is 0.4433, Adjusted R-squared is 0.4377
+This model explains approximately 44.33% of the variance in the graduation rate.
+
+The F-Statistic value of 78.72 with a very low p-value shows that the model is statistically significant.
+
+The graphical representation of the plots in Residual Vs fitted shows that the plots are collectively near the red line. Few plots of variables show variance by falling away from the red line reducing the model fit value. The Q-Q residuals show a significant cluster of plots falling on the red line. The scale location graph shows random plotting of variables around the red line. The Residuals  Vs leverage accumulates near the zero value. The scattered remaining minimal plots show the least impact on Grad. Rate.
+
+
+Hence the predictors contribute to the variance in graduation rate.
+
+
+\textbf{Task 3: Open question (30$\%$)}
+
+Use mynewdata, discuss and perform any step(s) that you think that can improve the fitting in Task 2. You need to illustrate your work by using the R codes, output and discussion.  
+
+```{r, eval=TRUE}
+# Transformation of Grad.Rate variable to make the distribution more symmetrical
+#using square root
+mynewdata$Grad.Rate = sqrt(mynewdata$Grad.Rate)
+# Standardization of variable perc.alumni to make the mean as 0 and standard deviation
+#as 1 using scale.
+mynewdata$perc.alumni = scale(mynewdata$perc.alumni)
+# Using logarithmic transformation to variable Apps,P.Undergrad, Outstate,PhD,Expend to 
+# improve the skewness and making relationship between the variable as more linear.
+mynewdata$Apps = log(mynewdata$Apps)
+
+mynewdata$P.Undergrad = log(mynewdata$P.Undergrad)
+
+mynewdata$Outstate = log(mynewdata$Outstate)
+
+mynewdata$PhD = log(mynewdata$PhD)
+
+mynewdata$Expend = log(mynewdata$Expend)
+# To set a regression model using the transformed variables
+lm_trans = lm(Grad.Rate~Apps+P.Undergrad+Outstate+Room.Board+PhD+perc.alumni+Expend,
+              data = mynewdata)
+# To summarise the transformed regression model
+summary(lm_trans)
+
+
+```
+To improve the fitting, a possible transformation of 7 variables has been performed.
+Sometimes transformation of the data set helps to improvise the better fit further.
+
+Below are the comparison details of lm_select_model(same 7 variables without transformation) and lm_trans(same 7 variables with transformation)
+
+The lm_select_model and lm_trans: both models have the same number of predictors. The difference lies in the values of residuals, intercepts, and resulting R-squared.
+
+The lm_select_model depicts a higher residual value when compared to lm_trans which indicates that lm_select_model has more errors than that of lm_trans.
+
+The residual standard error of lm_select_model is 12.82 which is higher than lm_trans model 0.8546 representing that lm_trans has a good fit.
+
+The multiple R-squared of lm_trans is 0.4143 which is lower than lm_select_model 0.4433 indicating that lm_trans explains better variance with graduation rate.
+
+This concludes that the lm_trans model has a better fit due to low residual standard error, higher R-squared, and better intercept value indicating a more accurate prediction of graduation rates based on the given predictors compared to lm_model_select.
