@@ -31,11 +31,19 @@ Histogram Graphs:
 
 ![image](https://github.com/user-attachments/assets/973fcfb4-1277-419b-b8af-2435ee9328a9)
 
+
+
 ![image](https://github.com/user-attachments/assets/4a49f771-ba74-426a-b27c-cf551462c2b5)
+
+
 
 ![image](https://github.com/user-attachments/assets/9b8b6d00-6f87-40e2-b214-c9766b6fa217)
 
+
+
 ![image](https://github.com/user-attachments/assets/d9f200fe-e47e-44e3-b985-d429577c830d)
+
+
 
 3. Linear Regression Analysis
 
@@ -44,7 +52,11 @@ Histogram Graphs:
 A simple linear regression model was fitted with Grad.Rate as the dependent variable and Private and Elite as independent variables:
 
 ![image](https://github.com/user-attachments/assets/2816e753-de09-4bcb-abf0-5f942a60c5b3)
+
+
 ![image](https://github.com/user-attachments/assets/91c12491-bfa1-4f8f-9f94-9e6f2bfc20d9)
+
+
 
 •Residual Standard Error: 15.32
 
@@ -69,6 +81,8 @@ The Adjusted R-Squared value is slightly lower than R-Squared, indicating minima
 The 95% confidence intervals for the regression coefficients were calculated:
 
 ![image](https://github.com/user-attachments/assets/0073315a-2a05-4bc4-a9a2-9ea7faed9b87)
+
+
 A prediction interval for a new data point (Private = "Yes", Elite = "No") yielded an estimated graduation rate of 66.49%, with an interval range of 36.37% to 96.61%.
 
 
@@ -77,6 +91,8 @@ A prediction interval for a new data point (Private = "Yes", Elite = "No") yield
 An extended model was developed incorporating all variables as predictors. This model aimed to improve the explanatory power of the regression.
 
 ![image](https://github.com/user-attachments/assets/a842f866-9d42-4475-a3f4-0d311b76976c)
+
+
 
 Key Statistics:
 
@@ -88,18 +104,16 @@ ANOVA Test: Comparing the simple and multiple regression models showed that the 
 
 ![image](https://github.com/user-attachments/assets/7d1cb72e-4788-41d9-85b9-28cd8c7daca6)
 
-The above ANOVA table helps us to predict the better model for this analaysis.Model 1 analyse the response
-variable Grad.Rate with two predictors Private and Elite. where as Model 2 analyse the response variable
+The above ANOVA table helps us to predict the better model for this analaysis.Model 1 analyse the response variable Grad.Rate with two predictors Private and Elite. where as Model 2 analyse the response variable
 with Grad.Rate with all predictors in the data set.
-The Residual Degree of Freedom for model1 is 697 and model 2 is 683.The Residual Sum of Squares for
-model 1(163673) is higher than model 2(110622).Model 2 has sum of squares is 53051 which indicates the
+
+The Residual Degree of Freedom for model1 is 697 and model 2 is 683.The Residual Sum of Squares for model 1(163673) is higher than model 2(110622).Model 2 has sum of squares is 53051 which indicates the
 variability with multiple predictors when compared to model 1.
-The F-Satistics is 23.396 shows significant improvement in fit of model 2 when compared to model 1. The
-p-value is very low which shows statistically high significant for model 2 when compared to model 1.
-To conclude , this ANOVA table shows Model 2, with all predictors shows significantly better than model
-1(where Private and Elite are the predictors). The lower RSS value of model 2 with more number of
-predictors shows that predictors contribute significantly on variation in the Grad. Rate. Hence, the model
-2 provides a better fit than model 1.
+
+The F-Satistics is 23.396 shows significant improvement in fit of model 2 when compared to model 1. The p-value is very low which shows statistically high significant for model 2 when compared to model 1.
+
+This ANOVA table shows Model 2, with all predictors shows significantly better than model 1(where Private and Elite are the predictors). The lower RSS value of model 2 with more number of
+predictors shows that predictors contribute significantly on variation in the Grad. Rate. Hence, the model 2 provides a better fit than model 1.
 
 
 Conclusion: The multiple regression model outperforms the simple model, as indicated by a higher Adjusted R-Squared and ANOVA test results.
